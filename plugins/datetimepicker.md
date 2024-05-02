@@ -18,29 +18,31 @@ A plugin that provides the UI elements `DatePickerField`, `TimePickerField` and 
 
 ## Contents
 
-- [Installation](#installation)
-- [Use @nativescript/datetimepicker](#use-nativescriptdatetimepicker)
-  - [Core](#core)
-  - [Angular](#angular)
-  - [Vue](#vue)
-  - [Set the selected date and time](#set-the-selected-date-and-time)
-  - [Change the picker titles and buttons labels](#change-the-picker-titles-and-buttons-labels)
-  - [Set localization](#setlocalization)
-  - [Format the date and time](#format-the-date-and-time)
-  - [Set the minimum and maximum dates](#set-the-minimum-and-maximum-dates)
-  - [DateTimePickerFields pickers orientation](#datetimepickerfields-pickers-orientation)
-  - [Style the pickers with CSS](#style-the-pickers-with-css)
-  - [DateTimePicker](#datetimepicker)
-  - [Create custom pickers manually](#create-custom-pickers-manually)
-- [API](#api)
-  - [DatePickerField](#datepickerfield)
-  - [TimePickerField](#timepickerfield)
-  - [DateTimePickerFields](#datetimepickerfields)
-  - [DateTimePicker Class](#datetimepicker-class)
-  - [DatePickerOptions](#datepickeroptions)
-  - [TimePickerOptions](#timepickeroptions)
-  - [DateTimePickerStyle](#datetimepickerstyle)
-- [License](#license)
+- [@nativescript/datetimepicker](#nativescriptdatetimepicker)
+  - [Contents](#contents)
+  - [Installation](#installation)
+  - [Use @nativescript/datetimepicker](#use-nativescriptdatetimepicker)
+    - [Core](#core)
+    - [Angular](#angular)
+    - [Vue](#vue)
+    - [Svelte](#svelte)
+    - [Set the selected date and time](#set-the-selected-date-and-time)
+    - [Change the picker titles and buttons labels](#change-the-picker-titles-and-buttons-labels)
+    - [Set localization](#set-localization)
+    - [Format the date and time](#format-the-date-and-time)
+    - [Set the minimum and maximum dates](#set-the-minimum-and-maximum-dates)
+    - [Set the layout of DateTimePickerFields pickers](#set-the-layout-of-datetimepickerfields-pickers)
+    - [Style the pickers with CSS](#style-the-pickers-with-css)
+    - [Create custom pickers manually](#create-custom-pickers-manually)
+  - [API](#api)
+    - [DatePickerField](#datepickerfield)
+    - [TimePickerField](#timepickerfield)
+    - [DateTimePickerFields](#datetimepickerfields)
+    - [DateTimePicker Class](#datetimepicker-class)
+    - [DatePickerOptions](#datepickeroptions)
+    - [TimePickerOptions](#timepickeroptions)
+    - [DateTimePickerStyle](#datetimepickerstyle)
+  - [License](#license)
 
 ## Installation
 
@@ -52,77 +54,77 @@ npm install @nativescript/datetimepicker
 
 ### Core
 
-1. Register the plugin namespace with Page's `xmlns` attribute providing your prefix( `datetime`, for example) and setting its value to the plugin name.
+1.  Register the plugin namespace with Page's `xmlns` attribute providing your prefix (`datetime` for example) and setting its value to the plugin name.
 
-```xml
-<Page
-   xmlns="http://schemas.nativescript.org/tns.xsd"
-   xmlns:datetime="@nativescript/datetimepicker">
-```
+    ```xml
+    <Page
+      xmlns="http://schemas.nativescript.org/tns.xsd"
+      xmlns:datetime="@nativescript/datetimepicker"
+    />
+    ```
 
-2. Access the `atePickerField` view through the prefix.
+2.  Access the `datePickerField` view through the prefix.
 
-```xml
-<Page
-   xmlns="http://schemas.nativescript.org/tns.xsd"
-   xmlns:datetime="@nativescript/datetimepicker">
-   <!-- 2. -->
-   <datetime:DatePickerField hint="select date"/>
-   <datetime:TimePickerField hint="select time"/>
-   <datetime:DateTimePickerFields hintDate="select date" hintTime="select time"/>
-```
+    ```xml
+    <Page
+      xmlns="http://schemas.nativescript.org/tns.xsd"
+      xmlns:datetime="@nativescript/datetimepicker"
+    >
+      <datetime:DatePickerField hint="select date" />
+      <datetime:TimePickerField hint="select time" />
+      <datetime:DateTimePickerFields hintDate="select date" hintTime="select time" />
+    </Page>
+    ```
 
 ### Angular
 
 1. Register the plugin by adding the plugin's `NativeScriptDateTimePickerModule` to the `imports` array of the module that contains the component where you want to use the `DatePickerField`:
 
-```ts
-import { NativeScriptDateTimePickerModule } from "@nativescript/datetimepicker/angular";
-...
-@NgModule({
-    imports: [
-        NativeScriptCommonModule,
-        NativeScriptDateTimePickerModule,
-        ...
-    ],
-    ...
-```
+   ```ts
+   import { NativeScriptDateTimePickerModule } from '@nativescript/datetimepicker/angular'
+
+   @NgModule({
+     imports: [
+       NativeScriptCommonModule,
+       NativeScriptDateTimePickerModule,
+       // ...
+     ],
+     // ...
+   })
+   ```
 
 2. Use `DatePickerField` in markup as follows:
 
-```html
-<DatePickerField hint="select date"></DatePickerField>
-<TimePickerField hint="select time"></TimePickerField>
-<DateTimePickerFields
-  hintDate="select date"
-  hintTime="select time"
-></DateTimePickerFields>
-```
+   ```xml
+   <DatePickerField hint="select date"></DatePickerField>
+   <TimePickerField hint="select time"></TimePickerField>
+   <DateTimePickerFields
+     hintDate="select date"
+     hintTime="select time"
+   ></DateTimePickerFields>
+   ```
 
 ### Vue
 
 1. Once the plugin has been installed, register it with your app project, in the `main.ts` file for global access.
 
-```ts
-import DateTimePicker from '@nativescript/datetimepicker/vue'
+   ```ts
+   import DateTimePicker from '@nativescript/datetimepicker/vue'
 
-import Home from './components/Home.vue'
+   import Home from './components/Home.vue'
 
-const app = createApp(Home).use(DateTimePicker)
+   const app = createApp(Home).use(DateTimePicker)
 
-app.start()
-```
+   app.start()
+   ```
 
 2. Use the `DatePickerField` in a `template` as follows:
 
-```html
-<DatePickerField hint="select date"></DatePickerField>
-<TimePickerField hint="select time"></TimePickerField>
-<DateTimePickerFields
-  hintDate="select date"
-  hintTime="select time"
-></DateTimePickerFields>
-```
+   ```xml
+   <DatePickerField hint="select date" />
+   <TimePickerField hint="select time" />
+   <DateTimePickerFields hintDate="select date" hintTime="select time" />
+   ```
 
 ### Svelte
 
@@ -193,9 +195,15 @@ To localize the `DatePickerField` and `DateTimePickerFields` components, use the
 ```xml
 <DatePickerField locale="en_GB" hint="select date"></DatePickerField>
 <!-- DateTimePickerFields -->
-<DateTimePickerFields locale="de_DE" hintDate="datum auswählen" hintTime="zeit wählen"
-                        pickerOkText="Bestätigen" pickerCancelText="Stornieren"
-                        pickerTitleDate="Datum auswählen" pickerTitleTime="Zeit wählen" />
+<DateTimePickerFields
+  locale="de_DE"
+  hintDate="datum auswählen"
+  hintTime="zeit wählen"
+  pickerOkText="Bestätigen"
+  pickerCancelText="Stornieren"
+  pickerTitleDate="Datum auswählen"
+  pickerTitleTime="Zeit wählen"
+></DateTimePickerFields>
 ```
 
 ### Format the date and time
@@ -208,7 +216,7 @@ Aside from the default formats that are dependent on the value of the `locale` p
 
 The `TimePickerField` will determine whether to use 12 or 24 hour format (for formatting of the selected time in the field and for the values of the hour spinner) based on the selected region in the settings of the iOS device and based on the `Use 24-Hour Format` setting of the Android device. To change the default setting on Android, you need to use the `timeFormat` property and to change the setting on iOS, you need to use the `locale` property.
 
-```html
+```xml
 <TimePickerField time="16:00" timeFormat="h:mm a" locale="en_US" />
 ```
 
@@ -222,15 +230,19 @@ For the `DateTimePickerFields` picker, use the same properties( `dateFormat`, `t
 
 To set the minimum and maximum dates, use the `minDate` and `maxDate` properties for the `DatePickerField` and `DateTimePickerFields` components.
 
-```html
-<DatePickerField minDate="2020/02/02" maxDate="2021/02/02" hint="tap to select" />
+```xml
+<DatePickerField
+  minDate="2020/02/02"
+  maxDate="2021/02/02"
+  hint="tap to select"
+></DatePickerField>
 <!-- DateTimePickerFields -->
 <DateTimePickerFields
   minDate="2020/02/02"
   maxDate="2021/02/02"
   hintDate="tap to select date"
   hintTime="tap to select time"
-/>
+></DateTimePickerFields>
 ```
 
 ### Set the layout of DateTimePickerFields pickers
@@ -267,32 +279,31 @@ that the iOS native implementation has limited capabilities for the buttons back
 ```css
 timepickerfield,
 datepickerfield {
-    padding: 12 4;
+  padding: 12 4;
 }
 
 timepickerfield.apply-css,
 datepickerfield.apply-css {
-    color: #CDDC39;
-    background-color: #00796B;
-    font-size: 20;
-    font-weight: bold;
-    padding: 20;
+  color: #cddc39;
+  background-color: #00796b;
+  font-size: 20;
+  font-weight: bold;
+  padding: 20;
 }
 
 .date-time-picker.apply-css {
-    color: #00796B;
-    background-color: #CDDC39;
+  color: #00796b;
+  background-color: #cddc39;
 }
 
 .date-time-picker-spinners.apply-css {
-    color: #CDDC39;
-    background-color: #00796B;
+  color: #cddc39;
+  background-color: #00796b;
 }
 
 .date-time-picker-buttons.apply-css {
-    color: #00796B;
+  color: #00796b;
 }
-Footer
 ```
 
 To apply styles at runtime when opening the DateTimePicker you can do the following:
@@ -300,6 +311,7 @@ To apply styles at runtime when opening the DateTimePicker you can do the follow
 ```ts
 import { DateTimePicker, DateTimePickerStyle } from '@nativescript/datetimepicker'
 import { Application, View } from '@nativescript/core'
+
 function createPicker(args: EventData) {
   const dateTimePickerStyle = DateTimePickerStyle.create(args.object as any)
 
@@ -343,52 +355,60 @@ function createPicker(args: EventData) {
 Internally `DatePickerField` and `TimePickerField` call the `pickDate` and `pickTime` methods of the `DateTimePicker` class which are public. You can create custom pickers by calling those methods manually. The `pickDate` method accepts [DatePickerOptions](#datepickeroptions), while the `pickTime` method accepts [TimePickerOptions](#timepickeroptions).
 
 ```ts
-function onPickDateTap (args: EventData) {
-                const dateToday = new Date();
-                const dateTomorrow = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate() + 1);
-                const dateNextWeek = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate() + 7);
+function onPickDateTap(args: EventData) {
+  const dateToday = new Date()
+  const dateTomorrow = new Date(
+    dateToday.getFullYear(),
+    dateToday.getMonth(),
+    dateToday.getDate() + 1
+  )
+  const dateNextWeek = new Date(
+    dateToday.getFullYear(),
+    dateToday.getMonth(),
+    dateToday.getDate() + 7
+  )
 
-                DateTimePicker
-                    .pickDate({
-                        context: args.object._context,
-                        date: dateTomorrow,
-                        minDate: dateTomorrow,
-                        maxDate: dateNextWeek,
-                        okButtonText: "OK",
-                        cancelButtonText: "Cancel",
-                        title: "choose date",
-                        locale: "en_GB"
-                    })
-                    .then(selectedDate => {
-                        if (selectedDate) {
-                            this.dateText = this.getFormattedDate(selectedDate);
-                        }
-                    });
-            },
+  DateTimePicker.pickDate({
+    context: args.object._context,
+    date: dateTomorrow,
+    minDate: dateTomorrow,
+    maxDate: dateNextWeek,
+    okButtonText: 'OK',
+    cancelButtonText: 'Cancel',
+    title: 'choose date',
+    locale: 'en_GB'
+  }).then(selectedDate => {
+    if (selectedDate) {
+      this.dateText = this.getFormattedDate(selectedDate)
+    }
+  })
+}
 ```
 
 ```ts
-function onPickTimeTap (args: EventData) {
-                const dateToday = new Date();
-                const dateTomorrow = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate() + 1);
-                dateTomorrow.setHours(8);
-                dateTomorrow.setMinutes(0);
-                DateTimePicker
-                    .pickTime({
-                        context: args.object._context,
-                        time: dateTomorrow,
-                        okButtonText: "OK",
-                        cancelButtonText: "Cancel",
-                        title: "choose time",
-                        locale: "en_GB",
-                        is24Hours: true
-                    })
-                    .then(selectedTime => {
-                        if (selectedTime) {
-                            this.timeText = this.getFormattedTime(selectedTime);
-                        }
-                    });
-            },
+function onPickTimeTap(args: EventData) {
+  const dateToday = new Date()
+  const dateTomorrow = new Date(
+    dateToday.getFullYear(),
+    dateToday.getMonth(),
+    dateToday.getDate() + 1
+  )
+  dateTomorrow.setHours(8)
+  dateTomorrow.setMinutes(0)
+  DateTimePicker.pickTime({
+    context: args.object._context,
+    time: dateTomorrow,
+    okButtonText: 'OK',
+    cancelButtonText: 'Cancel',
+    title: 'choose time',
+    locale: 'en_GB',
+    is24Hours: true
+  }).then(selectedTime => {
+    if (selectedTime) {
+      this.timeText = this.getFormattedTime(selectedTime)
+    }
+  })
+}
 ```
 
 ## API
