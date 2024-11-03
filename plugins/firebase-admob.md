@@ -78,7 +78,7 @@ Update your `Info.plist` file at `App_Resources/iOS` with a `GADApplicationIdent
 
 ```xml
 <key>GADApplicationIdentifier</key>
-<string>ca-app-pub-3940256099942544~1458002511</string>
+<string>ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy</string>
 ```
 
 For more information about configuring the `Info.plist` and setting up your App ID, see [Update your Info.plist](https://developers.google.com/admob/ios/quick-start#update%5C_your%5C_infoplist).
@@ -89,7 +89,7 @@ Add AdMob App ID ([identified in the AdMob UI](https://support.google.com/admob/
 
 ```xml
 <application>
-  <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+  <!-- Sample AdMob App ID: ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy -->
   <meta-data
     android:name="com.google.android.gms.ads.APPLICATION_ID"
     android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"
@@ -128,7 +128,11 @@ Banner ads are rectangular ads that appear at the top or bottom of the device sc
 
 #### Testing Banner ads in development mode
 
-> **Note:** When developing your app, make sure you use test ads rather than live, production ads. Failure to do so can lead to suspension of your account. Make sure you replace the test unit ID with your ad unit ID before publishing your app.
+:::tip Note
+
+When developing your app, make sure you use test ads rather than live, production ads. Failure to do so can lead to suspension of your account. Make sure you replace the test unit ID with your ad unit ID before publishing your app.
+
+:::
 
 To enable dedicated test ad unit ID for banners, visit the links below:
 
@@ -151,17 +155,27 @@ The `BannerAd` requires the following attributes to be set:
 - `BannerAdListener` -->
 
 ```xml
-<Page xmlns:ui="@nativescript/firebase-admob" >
-
+<Page xmlns:ui="@nativescript/firebase-admob">
   <StackLayout>
     <ui:BannerAd
       height="100"
       width="100"
       unitId="{{bannerAdUnit}}"
-      layoutChanged="{{bannerLoaded}}"
-/>
+      layoutChanged="{{loadBanner}}"
+    />
   </StackLayout>
+  <!-- ... -->
+</Page>
+```
 
+```js
+import { BannerAdSize } from '@nativescript/firebase-admob'
+
+export function loadBanner(args) {
+  const banner = args.object
+  banner.size = new BannerAdSize(100, 100)
+  banner.load()
+}
 ```
 
 #### Add Banner ad in NativeScript Angular
@@ -217,8 +231,13 @@ And then add it to markup as follows. The `BannerAd` requires the following attr
 - `BannerAdSize`: You can set this value in the callback function of the `layoutChanged` event. For more information, see [Customize the banner ad size](#customize-the-banner-ad-size)
 - `height` and `width`
 
-```html
-<BannerAd height="100" width="100" :unitId="bannerAdUnit" @layoutChanged="bannerLoaded" />
+```xml
+<BannerAd
+  height="100"
+  width="100"
+  :unitId="bannerAdUnit"
+  @layoutChanged="bannerLoaded"
+/>
 ```
 
 #### Customize the banner ad size
@@ -230,9 +249,7 @@ To define a custom banner size, you have 2 options:
 ```ts
 import { BannerAdSize } from '@nativescript/firebase-admob'
 
-const adSize = new BannerAdSize(300, 50)
-
-banner.size = adSize
+banner.size = new BannerAdSize(300, 50)
 ```
 
 - Set the `size` to any of the constants of the `BannerAdSize` class.
@@ -254,33 +271,32 @@ The table below lists the available constants and the sizes they represent.
 The plugin enables you to listen to different lifecycle events of an ad, such as when an ad is loaded. Register the events handlers before calling the `load` method.
 
 ```ts
-const bannerView = event.object;
+const bannerView = event.object
 
 // Called when an ad is successfully received.
-bannerView.on('adLoaded', (args) =>{
-console.log('Ad loaded.'),
-});
+bannerView.on('adLoaded', args => {
+  console.log('Ad loaded.')
+})
 
- // Called when an ad request failed.
-bannerView.on('adFailedToLoad', (args) =>{
-   console.log('Ad failed to load: ', args.error);
-});
+// Called when an ad request failed.
+bannerView.on('adFailedToLoad', args => {
+  console.log('Ad failed to load: ', args.error)
+})
 
- // Called when the user removes an overlay that covers the screen.
-bannerView.on('adClosed', (args) =>{
-   console.log('Ad closed.');
-});
+// Called when the user removes an overlay that covers the screen.
+bannerView.on('adClosed', args => {
+  console.log('Ad closed.')
+})
 
- // Called when an impression occurs on the ad.
-bannerView.on('adImpression', (args) =>{
-   console.log('Ad impression.');
-});
+// Called when an impression occurs on the ad.
+bannerView.on('adImpression', args => {
+  console.log('Ad impression.')
+})
 
- // Called when an tap/touch/click occurs on the ad.
-bannerView.on('adClicked', (args) =>{
-   console.log('Ad tapped');
-});
-
+// Called when an tap/touch/click occurs on the ad.
+bannerView.on('adClicked', args => {
+  console.log('Ad tapped')
+})
 ```
 
 ### Display a banner ad to the user
@@ -297,8 +313,12 @@ Interstitial ads are full-screen ads that cover the interface of an app until cl
 
 #### Testing Interstitial ads in development
 
-> **Note:** When your app is in development mode, make sure you use test ads rather than live, production ads. Failure to do so can lead to suspension of your account. Make sure you replace the test unit ID with your ad unit ID before publishing your app.
-> To enable dedicated test ad unit ID, visit the links below:
+:::tip Note
+
+When your app is in development mode, make sure you use test ads rather than live, production ads. Failure to do so can lead to suspension of your account. Make sure you replace the test unit ID with your ad unit ID before publishing your app.
+To enable dedicated test ad unit ID, visit the links below:
+
+:::
 
 - [Android demo units](https://developers.google.com/admob/android/test-ads#demo_ad_units)
 - [iOS demo units](https://developers.google.com/admob/ios/test-ads#demo_ad_units)
@@ -319,7 +339,7 @@ Create an Interstitial ad instance by calling the static `createForAdRequest` on
 
 ```ts
 import { InterstitialAd } from '@nativescript/firebase-admob'
-const ad = InterstitialAd.createForAdRequest('ca-app-pub-3940256099942544/4411468910')
+const ad = InterstitialAd.createForAdRequest('ca-app-pub-xxxxxxxxxxxxxxxx/yyyyyyyyyy')
 ```
 
 3. Listen to the ad lifecycle events
@@ -328,7 +348,8 @@ To listen for the ad lifecycle events, such as when the ad is display or dismiss
 
 ```ts
 import { InterstitialAd } from '@nativescript/firebase-admob'
-const ad = InterstitialAd.createForAdRequest('ca-app-pub-3940256099942544/4411468910')
+
+const ad = InterstitialAd.createForAdRequest('ca-app-pub-xxxxxxxxxxxxxxxx/yyyyyyyyyy')
 
 ad.onAdEvent((event, error, data) => {
   switch (event) {
@@ -351,7 +372,8 @@ ad.onAdEvent((event, error, data) => {
 
 ```ts
 import { InterstitialAd } from '@nativescript/firebase-admob'
-const ad = InterstitialAd.createForAdRequest('ca-app-pub-3940256099942544/4411468910')
+
+const ad = InterstitialAd.createForAdRequest('ca-app-pub-xxxxxxxxxxxxxxxx/yyyyyyyyyy')
 
 ad.onAdEvent((event, error, data) => {
   switch (event) {
@@ -377,7 +399,8 @@ To display the ad, call the `show` method on the ad instance. This method is cal
 
 ```ts
 import { InterstitialAd } from '@nativescript/firebase-admob'
-const ad = InterstitialAd.createForAdRequest('ca-app-pub-3940256099942544/4411468910')
+
+const ad = InterstitialAd.createForAdRequest('ca-app-pub-xxxxxxxxxxxxxxxx/yyyyyyyyyy')
 
 ad.onAdEvent((event, error, data) => {
   switch (event) {
@@ -415,7 +438,7 @@ To add a Native ad to your {N} Core app, follow these steps:
 1. Register the plugin namespace under a prefix, `ui` (this can be any name), with the Page element.
 
 ```xml
-<Page xmlns:ui="@nativescript/firebase-admob" />
+<Page xmlns:ui="@nativescript/firebase-admob">
 ```
 
 2. Use the prefix to access the `NativeAdView` and add it to markup.
@@ -431,7 +454,11 @@ To add a Native ad to your {N} Core app, follow these steps:
 
 ### Testing Native ads in development mode
 
-> **Note:** When developing your app, make sure you use test ad unit IDs rather than live, production ads. Failure to do so can lead to suspension of your account. Just make sure you replace the test ad unit ID with your own ad unit ID before publishing your app.
+:::tip Note
+
+When developing your app, make sure you use test ad unit IDs rather than live, production ads. Failure to do so can lead to suspension of your account. Just make sure you replace the test ad unit ID with your own ad unit ID before publishing your app.
+
+:::
 
 To enable dedicated test ad unit ID, visit the links below:
 
@@ -450,7 +477,7 @@ The `NativeAdLoader` class is an interface for managing the the Native ad.
    Create an instance of `NativeAdLoader` by calling its constructor function. The constructor function accepts 3 parameters. The required adUnitId as the first parameter, optional RequestOptions and NativeAdOptions objects as the second and third parameter, respectively.
 
 ```ts
-const loader = new NativeAdLoader('ca-app-pub-3940256099942544/3986624511', null, {
+const loader = new NativeAdLoader('ca-app-pub-xxxxxxxxxxxxxxxx/yyyyyyyyyy', null, {
   nativeAdOptions: {
     adChoicesPlacement: AdChoicesPlacement.TOP_RIGHT
   }
@@ -473,28 +500,29 @@ To listen to the Native ad [lifecycle events](), call the `onAdEvent` method on 
 ```
 
 ```ts
-nativeAdLoaded(event){
-const view = event.object;
-loader.onAdEvent((event, error, data) => {
-	if (event === NativeAdEventType.LOADED) {
-		const ad = data as NativeAd;
+function nativeAdLoaded(event) {
+  const view = event.object
 
-		const headLineView = view.getViewById('headLineView');
-		headLineView.text = ad.headline;
-		const mediaView = view.getViewById('mediaView');
-		view.mediaView = mediaView;
-		mediaView.mediaContent = ad.mediaContent;
-		const callToActionButton = view.getViewById('callToActionView');
-		view.callToActionView = callToActionButton;
-		callToActionButton.text = ad.callToAction;
-		const bodyView = view.getViewById('bodyView');
-		bodyView.text = ad.body;
-		view.nativeAd = ad;
-		console.log('nativead loaded');
-	} else if (event === 'adFailedToLoad') {
-		console.log('nativead failed to load', error);
-	}
-});
+  loader.onAdEvent((event, error, data) => {
+    if (event === NativeAdEventType.LOADED) {
+      const ad = data as NativeAd
+
+      const headLineView = view.getViewById('headLineView')
+      headLineView.text = ad.headline
+      const mediaView = view.getViewById('mediaView')
+      view.mediaView = mediaView
+      mediaView.mediaContent = ad.mediaContent
+      const callToActionButton = view.getViewById('callToActionView')
+      view.callToActionView = callToActionButton
+      callToActionButton.text = ad.callToAction
+      const bodyView = view.getViewById('bodyView')
+      bodyView.text = ad.body
+      view.nativeAd = ad
+      console.log('nativead loaded')
+    } else if (event === 'adFailedToLoad') {
+      console.log('nativead failed to load', error)
+    }
+  })
 }
 ```
 
@@ -508,12 +536,12 @@ loader.load()
 ### NativeAdOptions interface
 
 A NativeAdOptions object is used to set the following options on the native ad.
-| Property | Type | Description
-|:---------|:-----|:-----------
-| `returnUrlsForImageAssets` | `boolean` | _Optional_: If set to `true`, the SDK will not load image asset content and native ad image URLs can be used to fetch content. Defaults to `false`.
-| `multipleImages` | `boolean`| _Optional_: Some image assets contain a series of images. Setting this property to `true` tells the app to display all the images of an asset. The `false`(the default) value informs the app to display the first image from the series of images in an image asset.
-| `adChoicesPlacement` | [AdChoicesPlacement](#adchoicesplacement) |_Optional_: The [AdChoices overlay](https://developers.google.com/admob/android/native/advanced#adchoices_overlay) is set to the top right corner by default. Apps can change which corner this overlay is rendered in by setting this property to one of the following:
-| `videoOptions` | [videoOptions](#videooptions)| _Optional_: Used to set video options for video assets returned as part of a native ad. If an ad contains a video(if `ad.mediaContent.hasVideoContent = true`), display the video.
+| Property | Type | Description |
+|:---------|:-----|:----------- |
+| `returnUrlsForImageAssets` | `boolean` | _Optional_: If set to `true`, the SDK will not load image asset content and native ad image URLs can be used to fetch content. Defaults to `false`. |
+| `multipleImages` | `boolean`| _Optional_: Some image assets contain a series of images. Setting this property to `true` tells the app to display all the images of an asset. The `false`(the default) value informs the app to display the first image from the series of images in an image asset. |
+| `adChoicesPlacement` | [AdChoicesPlacement](#adchoicesplacement) |_Optional_: The [AdChoices overlay](https://developers.google.com/admob/android/native/advanced#adchoices_overlay) is set to the top right corner by default. Apps can change which corner this overlay is rendered in by setting this property to one of the following: |
+| `videoOptions` | [videoOptions](#videooptions)| _Optional_: Used to set video options for video assets returned as part of a native ad. If an ad contains a video(if `ad.mediaContent.hasVideoContent = true`), display the video. |
 | `mediaAspectRatio` | [MediaAspectRatio](#mediaaspectratio) | _Optional_: This sets the aspect ratio for image or video to be returned for the native ad.
 
 #### AdChoicesPlacement
@@ -530,11 +558,11 @@ enum AdChoicesPlacement {
 #### videoOptions
 
 The `videoOptions` property is an object with the following properties:
-| Property | Type | Optional
-|:---------|:----|:-------
-| `startMuted` | `boolean` | _Yes_
-| `clickToExpandRequested` | `boolean` | _Yes_
-| `customControlsRequested` | `boolean` | _Yes_
+| Property | Type | Optional |
+|:---------|:----|:------- |
+| `startMuted` | `boolean` | _Yes_ |
+| `clickToExpandRequested` | `boolean` | _Yes_ |
+| `customControlsRequested` | `boolean` | _Yes_ |
 
 #### MediaAspectRatio
 
@@ -561,7 +589,11 @@ Rewarded ads are ads that users have the option of interacting with [in exchange
 
 ### Testing Rewarded ads in development mode
 
-> **Note:** When developing your app, make sure you use test ads rather than live, production ads. Failure to do so can lead to suspension of your account. Make sure you replace the test unit ID with your ad unit ID before publishing your app.
+:::tip Note
+
+When developing your app, make sure you use test ads rather than live, production ads. Failure to do so can lead to suspension of your account. Make sure you replace the test unit ID with your ad unit ID before publishing your app.
+
+:::
 
 To enable dedicated test ad unit ID, visit the links below:
 
@@ -584,7 +616,8 @@ Create a Rewarded ad instance by calling the `createForAdRequest` static method 
 
 ```ts
 import { RewardedAd } from '@nativescript/firebase-admob'
-const ad = RewardedAd.createForAdRequest('ca-app-pub-3940256099942544/1712485313')
+
+const ad = RewardedAd.createForAdRequest('ca-app-pub-xxxxxxxxxxxxxxxx/yyyyyyyyyy')
 ```
 
 3. Listen to the ad lifecycle events
@@ -592,7 +625,8 @@ const ad = RewardedAd.createForAdRequest('ca-app-pub-3940256099942544/1712485313
 
 ```ts
 import { RewardedAd } from '@nativescript/firebase-admob'
-const ad = RewardedAd.createForAdRequest('ca-app-pub-3940256099942544/1712485313')
+
+const ad = RewardedAd.createForAdRequest('ca-app-pub-xxxxxxxxxxxxxxxx/yyyyyyyyyy')
 
 ad.onAdEvent((event, error, data) => {
   if (event === AdEventType.LOADED) {
@@ -608,7 +642,8 @@ ad.onAdEvent((event, error, data) => {
 
 ```ts
 import { RewardedAd } from '@nativescript/firebase-admob'
-const ad = RewardedAd.createForAdRequest('ca-app-pub-3940256099942544/1712485313')
+
+const ad = RewardedAd.createForAdRequest('ca-app-pub-xxxxxxxxxxxxxxxx/yyyyyyyyyy')
 
 ad.onAdEvent((event, error, data) => {
   if (event === AdEventType.LOADED) {
@@ -626,7 +661,8 @@ To show the ad on the screen, call the `show()` method on the ad instance.
 
 ```ts
 import { RewardedAd } from '@nativescript/firebase-admob'
-const ad = RewardedAd.createForAdRequest('ca-app-pub-3940256099942544/1712485313')
+
+const ad = RewardedAd.createForAdRequest('ca-app-pub-xxxxxxxxxxxxxxxx/yyyyyyyyyy')
 
 ad.onAdEvent((event, error, data) => {
   if (event === AdEventType.LOADED) {
@@ -674,6 +710,7 @@ The following example indicates that you want your content treated as child-dire
 
 ```ts
 import { Admob, RequestConfiguration } from '@nativescript/firebase-admob'
+
 const requestConfiguration: RequestConfiguration = {
   tagForChildDirectedTreatment: true
 }
@@ -688,6 +725,7 @@ The following example indicates that you want TFUA included in your ad request.
 
 ```ts
 import { Admob, RequestConfiguration } from '@nativescript/firebase-admob'
+
 const requestConfiguration: RequestConfiguration = {
   tagForUnderAgeOfConsent: true
 }
@@ -715,6 +753,7 @@ import {
   MaxAdContentRating,
   RequestConfiguration
 } from '@nativescript/firebase-admob'
+
 const requestConfiguration: RequestConfiguration = {
   maxAdContentRating: MaxAdContentRating.G
 }
